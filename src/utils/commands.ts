@@ -27,16 +27,16 @@ export function category(name: string, commands: Command[], extra: CommandCatego
     }
 }
 
-export async function getCommandReference(command_name: string, client: CustomClient<true>) {
+export async function getCommandReference(command_name: string, client: CustomClient) {
     let _command = client.application?.commands.cache.find(x => x.name == command_name);
     if (!_command) _command = (await client.application?.commands.fetch(undefined)!).find(x => x.name == command_name);
-    if (!_command) _command = (await client.application?.commands.fetch(undefined, { guildId: keys.GUILD_ID })!).find(x => x.name == command_name);
+    if (!_command) _command = (await client.application?.commands.fetch(undefined, { guildId: keys.MAIN_GUILD_ID })!).find(x => x.name == command_name);
 
     if (!_command) return `/${command_name}`;
     return `</${_command.name}:${_command.id}>`;
 }
 
-export async function getAllCommandReferences(client: CustomClient<true>): Promise<{ name: string, ref: string }[] | undefined> {
+export async function getAllCommandReferences(client: CustomClient): Promise<{ name: string, ref: string }[] | undefined> {
     let _command = client.application?.commands.cache;
     if (_command?.size == 0) _command = await client.application?.commands.fetch(undefined, { force: true });
     if (!_command) return undefined;

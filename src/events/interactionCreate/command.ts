@@ -15,7 +15,7 @@ export default event('interactionCreate', async ({ client }, interaction) => {
     try {
         const commandName = interaction.commandName
         const command = allCommandsMap.get(commandName)
-        if(command?.guild_only && interaction.guildId !== keys.GUILD_ID) return; 
+        if(command?.guild_only && interaction.guildId !== keys.MAIN_GUILD_ID) return; 
 
         if (!command) throw new Error('Command not found.')
 

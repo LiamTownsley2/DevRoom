@@ -24,7 +24,7 @@ const rest = new REST({ version: '10' }).setToken(keys.DISCORD_TOKEN)
 async function main() {
     const currentUser = await rest.get(Routes.user()) as APIUser
     const global_endpoint = Routes.applicationCommands(keys.CLIENT_ID)
-    const guild_endpoint = Routes.applicationGuildCommands(keys.CLIENT_ID, keys.GUILD_ID)
+    const guild_endpoint = Routes.applicationGuildCommands(keys.CLIENT_ID, keys.MAIN_GUILD_ID)
     if (process.env.NODE_ENV == 'production') {
         await rest.put(global_endpoint, { body: [...body_global] });
         await rest.put(guild_endpoint, { body: [...body_guild] });
@@ -41,7 +41,7 @@ main()
         const tag = `${user.username}#${user.discriminator} (${user.id})`
         const response = process.env.NODE_ENV == 'production'
             ? `Sucesfully released commands globally as ${tag}.`
-            : `Sucesfully assigned commands locally to development guild ${keys.GUILD_ID} as ${tag}.`
+            : `Sucesfully assigned commands locally to development guild ${keys.MAIN_GUILD_ID} as ${tag}.`
 
         console.log(response);
     })

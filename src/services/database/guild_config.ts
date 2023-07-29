@@ -2,20 +2,30 @@ import { collections } from "..";
 import { GuildConfig } from "../../types";
 import CustomCache from "../../utils/custom_cache";
 
-const guild_config_cache = new CustomCache<GuildConfig>()
+export const guild_config_cache = new CustomCache<GuildConfig>()
 
-export async function getGuildConfig(guild_id: string) {
+export async function getGuildConfig(guild_id: string): Promise<GuildConfig> {
     let config;
     if (guild_config_cache.get(guild_id)) {
         config = guild_config_cache.get(guild_id)?.value
-        return config;
+        if (config) {
+            return config;
+        }
     }
-    if (config == undefined) config = _getDefaultGuildConfig(guild_id);
+
+    config = await getGuildConfigFromDatabase(guild_id);
+
+    if (config == undefined) {
+        config = _getDefaultGuildConfig(guild_id);
+        await insertGuildConfigToDatabase(config);
+    }
 
     guild_config_cache.set(guild_id, {
         value: config,
-        expiration: 2 * 60000 // * 60000 = Minutes to Milliseconds
+        expiration: new Date(Date.now() + 1 * 60000)
     })
+
+    return config;
 }
 
 export async function getGuildConfigFromDatabase(guild_id: string): Promise<GuildConfig> {
