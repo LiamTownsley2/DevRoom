@@ -8,7 +8,7 @@ export async function connectToDatabase() {
     await client.connect();
 
     const db: mongoDB.Db = client.db(process.env.DB_NAME);
-    const configCollection: mongoDB.Collection = db.collection(keys.CONFIG_COLLECTION_NAME);
+    const configCollection: mongoDB.Collection = db.collection('config');
 
     collections.config = configCollection;
 
