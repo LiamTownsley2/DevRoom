@@ -1,0 +1,29 @@
+{
+    "name": "@liamtownsley/bot",
+    "description": "",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "start": "tsc --build && cd dist && node --trace-warnings index",
+        "build": "tsc --build",
+        "deploy": "cross-env IS_SCRIPT=true ts-node src/deploy",
+        "deploy-production": "cross-env NODE_ENV=production npm run deploy"
+    },
+    "author": "oxi#0082 (@root)",
+    "license": "ISC",
+    "dependencies": {
+        "discord.js": "^14.11.0",
+        "dotenv": "^16.0.3",
+        "fs": "^0.0.1-security",
+        "fs-extra": "^11.1.1",
+        "moment": "^2.29.4",
+        "mongodb": "4.0",
+        "path": "^0.12.7"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^11.0.1",
+        "cross-env": "^7.0.3",
+        "ts-node": "^10.9.1",
+        "typescript": "^5.0.4"
+    }
+}
