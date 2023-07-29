@@ -1,5 +1,6 @@
 import commands from "../../commands";
 import keys from "../../keys";
+import { getGuildConfig } from "../../services";
 import { Command } from "../../types"
 import { event } from "../../utils";
 
@@ -8,9 +9,10 @@ const allCommandsMap = new Map<string, Command>(
     allCommands.map((c) => [c.meta.name, c])
 )
 
+
 export default event('interactionCreate', async ({ client }, interaction) => {
     if (!interaction.isChatInputCommand()) return
-
+    if(!interaction.guild) return;
 
     try {
         const commandName = interaction.commandName
@@ -19,9 +21,12 @@ export default event('interactionCreate', async ({ client }, interaction) => {
 
         if (!command) throw new Error('Command not found.')
 
+        const config = await getGuildConfig(interaction.guild.id);
+
         await command.exec({
             client,
-            interaction
+            interaction,
+            config
         });
 
         client.log('execution', `${interaction.user.tag} (${interaction.user.id}) has used ${interaction.commandName} in channel: ${interaction.channel?.id}`)

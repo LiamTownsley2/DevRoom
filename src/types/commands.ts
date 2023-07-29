@@ -1,10 +1,12 @@
 import { AutocompleteInteraction, Awaitable, ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandSubcommandGroupBuilder, SlashCommandSubcommandsOnlyBuilder } from "discord.js";
 import CustomClient from "../client/CustomClient";
+import { GuildConfig } from ".";
 
 
 export interface CommandProps {
     interaction: ChatInputCommandInteraction
     client: CustomClient
+    config: GuildConfig
 }
 
 export type CommandExec =

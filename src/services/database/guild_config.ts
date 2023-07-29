@@ -2,6 +2,7 @@ import { collections } from "..";
 import { GuildConfig } from "../../types";
 import CustomCache from "../../utils/custom_cache";
 
+export const GUILD_CONFIG_EXPIRATION = 5; // in minutes
 export const guild_config_cache = new CustomCache<GuildConfig>()
 
 export async function getGuildConfig(guild_id: string): Promise<GuildConfig> {
@@ -22,7 +23,7 @@ export async function getGuildConfig(guild_id: string): Promise<GuildConfig> {
 
     guild_config_cache.set(guild_id, {
         value: config,
-        expiration: new Date(Date.now() + 1 * 60000)
+        expiration: new Date(Date.now() + GUILD_CONFIG_EXPIRATION * 60000)
     })
 
     return config;
