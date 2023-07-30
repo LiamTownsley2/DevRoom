@@ -1,4 +1,4 @@
-import { TextChannel, ButtonStyle, User, Message, ButtonBuilder, ChannelType, ActionRowBuilder, ChannelSelectMenuBuilder, StringSelectMenuOptionBuilder, MessageComponentInteraction, StringSelectMenuBuilder, ComponentType, APISelectMenuOption } from 'discord.js';
+import { TextChannel, ButtonStyle, User, Message, ButtonBuilder, ChannelType, ActionRowBuilder, ChannelSelectMenuBuilder, MessageComponentInteraction, StringSelectMenuBuilder, ComponentType, APISelectMenuOption } from 'discord.js';
 import { CustomEmbeds } from '../config/embeds';
 
 /**

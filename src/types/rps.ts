@@ -1,4 +1,4 @@
-import { Snowflake, User } from 'discord.js';
+import { User } from 'discord.js';
 import { ObjectId } from 'mongodb';
 
 export interface RPSMove {

@@ -1,7 +1,7 @@
 import { ComponentType, SlashCommandBuilder } from 'discord.js'
 import { command, getPageButtons, getPageFromArray } from '../../utils'
 import { CustomEmbeds } from '../../config/embeds';
-import { getAllUserStats, getUserStats } from '../../services';
+import { getAllUserStats } from '../../services';
 
 const meta = new SlashCommandBuilder()
     .setName('leaderboard')

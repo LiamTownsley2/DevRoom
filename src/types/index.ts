@@ -1,5 +1,3 @@
-import { ActivityType } from 'discord.js';
-
 export * from './commands';
 export * from './config';
 export * from './keys';
@@ -10,6 +8,5 @@ export * from './scheduled_messages';
 export * from './user_stats';
 export * from './rps';
 
-export type RestrictedActivityType = ActivityType.Playing | ActivityType.Streaming | ActivityType.Listening | ActivityType.Watching | ActivityType.Competing | undefined;
 export type StockChartType = "open" | "high" | "low" | "close" | "volume";
 export type StockChartScales = "intraday" | "daily" | "weekly" | "monthly";

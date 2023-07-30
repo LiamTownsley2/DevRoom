@@ -1,5 +1,5 @@
 import { PermissionFlagsBits, SlashCommandBuilder, TextChannel } from 'discord.js'
-import { askStringQuestion, askButtonQuestion, askTextChannelQuestion, command, askSelectMenuQuestion, convertTimeString, getCommandReference, scheduleExecution, TIMEOUT_LIST } from '../../utils'
+import { askStringQuestion, askButtonQuestion, askTextChannelQuestion, command, convertTimeString, getCommandReference, scheduleExecution, TIMEOUT_LIST } from '../../utils'
 import { getGuildScheduledMessages, getScheduledMessages, insertScheduledMessageToDatabase, removeScheduledMessageFromDatabase } from '../../services';
 import { CustomEmbeds } from '../../config/embeds';
 import { ScheduledMessage } from '../../types';
