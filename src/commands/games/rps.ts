@@ -3,7 +3,7 @@ import { command } from '../../utils'
 import { CustomEmbeds } from '../../config/embeds'
 import { RPSMove } from '../../types'
 
-const RPS_MOVES: RPSMove[] = [];
+let RPS_MOVES: RPSMove[] = [];
 
 const meta = new SlashCommandBuilder()
     .setName('rps')
@@ -35,6 +35,8 @@ export default command(meta, async ({ interaction, client, config }) => {
                 embeds: [CustomEmbeds.games.rps.move(returningMove.author_move, returningMove.author, returningMove.opponent, move)]
             });
 
+            RPS_MOVES = RPS_MOVES.filter(x => !(x.opponent.id == interaction.user.id));
+            
             return await interaction.reply({
                 embeds: [CustomEmbeds.games.rps.move_sent(returningMove.author)],
                 ephemeral: true
