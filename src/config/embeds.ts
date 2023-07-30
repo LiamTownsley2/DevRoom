@@ -1,5 +1,5 @@
 import { APIEmbed, User } from 'discord.js';
-import { GuildConfig, ScheduledMessage, StockChartType } from '../types';
+import { GuildConfig, ScheduledMessage, StockChartType, UserStats } from '../types';
 import { getCommandReference } from '../utils';
 import CustomClient from '../client/CustomClient';
 
@@ -16,6 +16,11 @@ const DISCORD_WELCOME = [
     'Welcome. {{USER}}. We hope you\'ve brought pizza.',
     '{{USER}} just slide into the server.'
 ];
+
+export const CustomEmojis = {
+    right_chevron: '<:right_chevron:1135177000546484275>',
+    left_chevron: '<:left_chevron:1135176998193467414>',
+}
 
 export const CustomColours = {
     general: 0x1abc9c,
@@ -267,5 +272,36 @@ export const CustomEmbeds = {
                 }
             }
         }
+    },
+
+    message_tracking_module: {
+        leaderboard(users: UserStats[] | undefined, page_number: number, total_pages: number, page_length: number): APIEmbed {
+            if (!users || users.length == 0) {
+                return {
+                    title: '🏆 Guild Messages Leaderboard',
+                    description: 'There are no users to display on this page.',
+                    color: CustomColours.purple
+                }
+            }
+    
+            return {
+                title: '🏆 Guild Messages Leaderboard',
+                fields: [
+                    {
+                        name: '#', inline: true,
+                        value: users.map((_, i) => `${i + 1}`).join('\n')
+                    },
+                    {
+                        name: 'User', inline: true,
+                        value: users.map(x => `<@${x.user_id}>`).join('\n')
+                    },
+                    {
+                        name: 'Messages', inline: true,
+                        value: users.map(x => x.messages).join('\n')
+                    },
+                ],
+                color: CustomColours.purple
+            }
+        },
     }
 }

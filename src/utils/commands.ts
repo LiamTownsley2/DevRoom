@@ -48,3 +48,10 @@ export async function getAllCommandReferences(client: CustomClient): Promise<{ n
     
     return _references;
 }
+
+export function getPageFromArray(array: any[], pageNumber: number, pageSize: number) {
+    const startIndex = (pageNumber - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+
+    return array.slice(startIndex, endIndex > array.length ? array.length : endIndex);
+}

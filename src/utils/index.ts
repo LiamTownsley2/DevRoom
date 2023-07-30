@@ -1,6 +1,6 @@
 import { Collection, TextChannel } from 'discord.js';
 import CustomClient from '../client/CustomClient';
-import { insertScheduledMessageToDatabase } from '../services';
+import { getGuildConfig, insertScheduledMessageToDatabase } from '../services';
 import { ScheduledMessage, TimeOfDay } from '../types';
 
 export * from './commands';
@@ -51,6 +51,8 @@ export const TIMEOUT_LIST: Collection<string, NodeJS.Timer | NodeJS.Timeout> = n
 
 export async function scheduleExecution(scheduledMessage: ScheduledMessage, client: CustomClient) {
     const channel = await client.channels.fetch(scheduledMessage.channel_id) as TextChannel;
+    const config = await getGuildConfig(scheduledMessage.guild_id);
+    if(!config.scheduled_messages_module.enabled) return;
     if (scheduledMessage.delay.type === "time") {
         const timeUntilExecution = getTimeUntilTargetTime(scheduledMessage.delay);
         const timeout_id = setTimeout(async () => {
