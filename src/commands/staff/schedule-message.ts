@@ -36,9 +36,11 @@ const meta = new SlashCommandBuilder()
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
 
 
-export default command(meta, async ({ interaction, client }) => {
+export default command(meta, async ({ interaction, client, config }) => {
     if (!interaction.guild) return;
     if (!interaction.channel) return;
+
+    if (!config.scheduled_messages_module.enabled) return interaction.reply({ embeds: [CustomEmbeds.general.command_disabled()], ephemeral: true });
 
     await interaction.deferReply({ ephemeral: true });
 

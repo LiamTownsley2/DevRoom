@@ -17,7 +17,6 @@ export default event('ready', async ({ client }) => {
         })
     }, 1 * 60000) // * 60000 = Minutes To Milliseconds
 
-
     const scheduled_messages = await getAllScheduledMessages();
     if (scheduled_messages) {
         for (const message of scheduled_messages) {
