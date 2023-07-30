@@ -23,7 +23,8 @@ const meta = new SlashCommandBuilder()
         .setDescription('(OPTIONAL) Select a user you want to challenge to a game!')
     )
 
-export default command(meta, async ({ interaction, client }) => {
+export default command(meta, async ({ interaction, client, config }) => {
+    if(!config.games_module.enabled) return;
     const move = interaction.options.getString('action', true);
     const challenge_user = interaction.options.getUser('challenge');
     if (challenge_user) {
