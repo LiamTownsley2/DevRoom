@@ -11,6 +11,7 @@ export interface ScheduledMessage {
     delay: TimeOfDay | CustomDelay;
     last_sent: Date | null;
     created_at: Date;
+    interval_id?: NodeJS.Timer;
     _id?: ObjectId;
 }
 
@@ -22,5 +23,5 @@ export interface TimeOfDay {
 
 export interface CustomDelay {
     type: 'custom';
-    seconds: Number;
+    seconds: number;
 }

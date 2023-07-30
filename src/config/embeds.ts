@@ -30,10 +30,19 @@ export const CustomEmbeds = {
             }
         },
 
+        create_failure(reason?:string): APIEmbed {
+            return {
+                ...DefaultEmbed,
+                title: '❌ Scheduled Message Not Created',
+                description: `Your scheduled message could not be created.${(reason) ? `\n\n**Reason**\n${reason}` : ''}`,
+                color: CustomColours.error
+            }
+        },
+
         delete_success(delete_id: string): APIEmbed {
             return {
                 ...DefaultEmbed,
-                title: '❌ Deletion Success',
+                title: '✅ Deletion Success',
                 description: `Your Scheduled Message with the ID \`${delete_id}\` was deleted successfully.`,
                 color: CustomColours.info
             }

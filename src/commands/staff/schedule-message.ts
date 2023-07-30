@@ -1,7 +1,8 @@
 import { PermissionFlagsBits, SlashCommandBuilder, TextChannel } from 'discord.js'
-import { askStringQuestion, askButtonQuestion, askTextChannelQuestion, command, askSelectMenuQuestion, convertTimeString } from '../../utils'
+import { askStringQuestion, askButtonQuestion, askTextChannelQuestion, command, askSelectMenuQuestion, convertTimeString, getCommandReference, scheduleExecution, TIMEOUT_LIST } from '../../utils'
 import { getGuildScheduledMessages, getScheduledMessages, insertScheduledMessageToDatabase, removeScheduledMessageFromDatabase } from '../../services';
 import { CustomEmbeds } from '../../config/embeds';
+import { ScheduledMessage } from '../../types';
 
 const meta = new SlashCommandBuilder()
     .setName('schedule-message')
@@ -64,7 +65,7 @@ export default command(meta, async ({ interaction, client }) => {
                     }
                     let _time = time_of_day!.split(':');
 
-                    await insertScheduledMessageToDatabase({
+                    let one_schedule:ScheduledMessage = {
                         guild_id: interaction.guild.id,
                         channel_id: channel!,
                         message: content!,
@@ -77,8 +78,10 @@ export default command(meta, async ({ interaction, client }) => {
                             minute: parseInt(_time[1])
                         },
                         last_sent: null,
-                        created_at: new Date()
-                    });
+                        created_at: new Date(),
+                    }
+                    await scheduleExecution(one_schedule, client);
+                    await insertScheduledMessageToDatabase(one_schedule);
                     break;
                 case 2:
                     let custom_delay = await askStringQuestion('Please enter how long of a gap you want inbetween the messages sending in timestring format `(ex: 2h 30m 25s)`', interaction.channel as TextChannel, interaction.user);
@@ -98,8 +101,8 @@ export default command(meta, async ({ interaction, client }) => {
                             'Please enter how long of a gap you want inbetween the messages sending in timestring format `(ex: 2h 30m 25s)`'].join('\n'), interaction.channel as TextChannel, interaction.user);
                         seconds = convertTimeString(custom_delay!);
                     }
-
-                    await insertScheduledMessageToDatabase({
+                    
+                    let two_schedule:ScheduledMessage = {
                         guild_id: interaction.guild.id,
                         channel_id: channel!,
                         author_id: interaction.user.id,
@@ -112,7 +115,15 @@ export default command(meta, async ({ interaction, client }) => {
                         },
                         last_sent: null,
                         created_at: new Date()
-                    })
+                    };
+
+                    await scheduleExecution(two_schedule, client);
+                    const res = await insertScheduledMessageToDatabase(two_schedule)
+                    if(!res) {
+                        return interaction.editReply({
+                            embeds: [CustomEmbeds.schedule_module.create_failure(`There is already a scheduled message for this channel. Please remove it before trying again. ${await getCommandReference('schedule-message', 'list', client)}`)]
+                        })
+                    }
                     break;
             }
 
@@ -130,6 +141,10 @@ export default command(meta, async ({ interaction, client }) => {
 
             if (delete_message.author_id == interaction.user.id || !interaction.memberPermissions?.has('Administrator')) {
                 await removeScheduledMessageFromDatabase(delete_id);
+                const _timeout = TIMEOUT_LIST.get(delete_id);
+                clearTimeout(_timeout as NodeJS.Timer);
+                clearInterval(_timeout as NodeJS.Timeout);
+
                 return interaction.editReply({
                     embeds: [CustomEmbeds.schedule_module.delete_success(delete_id)]
                 });
