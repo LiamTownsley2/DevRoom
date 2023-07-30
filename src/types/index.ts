@@ -11,3 +11,4 @@ export * from './user_stats';
 export * from './rps';
 
 export type RestrictedActivityType = ActivityType.Playing | ActivityType.Streaming | ActivityType.Listening | ActivityType.Watching | ActivityType.Competing | undefined;
+export type StockChartType = "open" | "high" | "low" | "close" | "volume";

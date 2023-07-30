@@ -1,5 +1,5 @@
 import { APIEmbed, User } from 'discord.js';
-import { ScheduledMessage } from '../types';
+import { ScheduledMessage, StockChartType } from '../types';
 import { getCommandReference } from '../utils';
 import CustomClient from '../client/CustomClient';
 
@@ -200,6 +200,24 @@ export const CustomEmbeds = {
             title: '🔒 Command Disabled',
             description: 'This command has been disabled by a Guild Administrator.',
             color: CustomColours.warning
+        }
+    },
+
+    stock(symbol: string, type:StockChartType): APIEmbed {
+        return {
+            title: `📈 Stock Market Data`,
+            fields: [
+                { name: 'Symbol', value: `\`$${symbol}\``, inline: true },
+                { name: 'Data Filter', value: `${type.toUpperCase()}`, inline: true}
+            ],
+            image: {
+                url: 'attachment://stock.png'
+            },
+            footer: {
+                text: 'Powered by Alpha Vantage API.'
+            },
+            color: CustomColours.info,
+            timestamp: new Date().toISOString()
         }
     }
 }
