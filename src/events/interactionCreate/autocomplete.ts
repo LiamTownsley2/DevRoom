@@ -1,4 +1,5 @@
 import commands from "../../commands";
+import { getGuildConfig } from "../../services";
 import { AutoCompleteCommand, Command } from "../../types"
 import { event } from "../../utils";
 
@@ -7,8 +8,8 @@ const allCommandsMap = new Map<string, Command>(
     allCommands.map((c) => [c.meta.name, c])
 )
 export default event('interactionCreate', async ({ client }, interaction) => {
-    if (!interaction.isAutocomplete()) return
-
+    if (!interaction.isAutocomplete()) return;
+    
     try {
         const commandName = interaction.commandName
         const command = allCommandsMap.get(commandName) as AutoCompleteCommand

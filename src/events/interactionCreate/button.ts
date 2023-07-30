@@ -13,6 +13,8 @@ export default event('interactionCreate', async ({ client }, interaction) => {
         const buttonId = interaction.customId.split(':')[0];
 
         const button = allButtonsMap.get(buttonId) as Button;
+        if(!button) return;
+        
         button.exec({ client, interaction });
 
     } catch (error) {

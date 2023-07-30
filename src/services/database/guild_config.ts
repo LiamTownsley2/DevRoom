@@ -67,14 +67,13 @@ export async function removeGuildConfigFromDatabase(guild_id: string) {
 function _getDefaultGuildConfig(guild_id: string): GuildConfig {
     return {
         guild_id,
-        automessage_module: {
-            enabled: false,
-            server_messages: []
+        scheduled_messages_module: {
+            enabled: false
         },
         games_module: {
             enabled: true
         },
-        messagetracker_module: {
+        message_tracker_module: {
             enabled: true
         },
         welcome_module: {
