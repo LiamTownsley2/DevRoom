@@ -87,13 +87,6 @@ export default command(meta, async ({ interaction, client, config }) => {
                     break;
                 case 2:
                     let custom_delay = await askStringQuestion('Please enter how long of a gap you want inbetween the messages sending in timestring format `(ex: 2h 30m 25s)`', interaction.channel as TextChannel, interaction.user);
-                    while (!convertTimeString(custom_delay!)) {
-                        custom_delay = await askStringQuestion([
-                            '⚠️ **Warning**: This is not a valid time string! Please try again.',
-                            '',
-                            'Please enter how long of a gap you want inbetween the messages sending in timestring format `(ex: 2h 30m 25s)`'].join('\n'), interaction.channel as TextChannel, interaction.user);
-                    }
-
                     let seconds = convertTimeString(custom_delay!);
 
                     while (!convertTimeString(custom_delay!) || seconds > 604800 || seconds < 60) { // 604800 = 1 week
