@@ -64,7 +64,7 @@ export async function scheduleExecution(scheduledMessage: ScheduledMessage, clie
 
             await scheduleExecution(scheduledMessage, client);
         }, timeUntilExecution);
-        TIMEOUT_LIST.set(scheduledMessage._id!.toString(), timeout_id);
+        TIMEOUT_LIST.set(scheduledMessage.channel_id, timeout_id);
     } else if (scheduledMessage.delay.type === "custom") {
         const interval = scheduledMessage.delay.seconds * 1000;
         const timeout_id = setInterval(async () => {
@@ -74,6 +74,6 @@ export async function scheduleExecution(scheduledMessage: ScheduledMessage, clie
             scheduledMessage.last_sent = new Date();
             await insertScheduledMessageToDatabase(scheduledMessage);
         }, interval);
-        TIMEOUT_LIST.set(scheduledMessage._id!.toString(), timeout_id);
+        TIMEOUT_LIST.set(scheduledMessage.channel_id, timeout_id);
     }
 }

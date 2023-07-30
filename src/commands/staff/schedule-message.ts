@@ -57,7 +57,7 @@ export default command(meta, async ({ interaction, client }) => {
             switch (frequency) {
                 case 1:
                     let time_of_day = await askStringQuestion('Please enter what time of the day you would like this message to be sent at, in 24 hour notation. (ex: 23:00)?', interaction.channel as TextChannel, interaction.user);
-                    while (!(/\d{0,3}:\d{0,3}/gi.test(time_of_day!))) {
+                    while (!(/\d{1,2}:\d{1,2}/gi.test(time_of_day!))) {
                         time_of_day = await askStringQuestion([
                             '⚠️ **Warning**: You need to enter the time like this: `23:00` for 11 PM.',
                             '',
@@ -141,7 +141,7 @@ export default command(meta, async ({ interaction, client }) => {
 
             if (delete_message.author_id == interaction.user.id || !interaction.memberPermissions?.has('Administrator')) {
                 await removeScheduledMessageFromDatabase(delete_id);
-                const _timeout = TIMEOUT_LIST.get(delete_id);
+                const _timeout = TIMEOUT_LIST.get(delete_message.channel_id);
                 clearTimeout(_timeout as NodeJS.Timer);
                 clearInterval(_timeout as NodeJS.Timeout);
 
@@ -172,7 +172,7 @@ export default command(meta, async ({ interaction, client }) => {
             });
 
             return interaction.editReply({
-                embeds: [CustomEmbeds.schedule_module.list(list_messages)]
+                embeds: [await CustomEmbeds.schedule_module.list(list_messages, client)]
             })
             break;
 

@@ -1,6 +1,6 @@
 import { APIEmbed, User } from 'discord.js';
 import { GuildConfig, ScheduledMessage, StockChartType, UserStats } from '../types';
-import { getCommandReference } from '../utils';
+import { getCommandReference, getTimeUntilTargetTime } from '../utils';
 import CustomClient from '../client/CustomClient';
 
 const DISCORD_WELCOME = [
@@ -99,16 +99,22 @@ export const CustomEmbeds = {
             }
         },
 
-        list(messages: ScheduledMessage[]): APIEmbed {
+        async list(messages: ScheduledMessage[], client:CustomClient): Promise<APIEmbed> {
             let ids = [];
             let channels = [];
             let createdAt = [];
-
+            let sendingAt = [];
+            if(!messages || messages.length == 0) return {
+                ...DefaultEmbed,
+                title: '🔗 All Guild Scheduled Messages',
+                description:  `There are no scheduled messages created yet, use the ${await getCommandReference('schedule-message', 'create', client)} command to create one.`
+            }
             for (const message of messages) {
                 ids.push(message._id);
                 channels.push(message.channel_id);
                 createdAt.push(Math.floor(message.created_at.getTime() / 1000));
-
+                let delay = (message.delay.type == 'custom') ? message.delay.seconds : getTimeUntilTargetTime(message.delay) / 1000
+                sendingAt.push(Math.floor(((message.last_sent || new Date()).getTime() + (delay * 1000)) / 1000))
             }
 
             return {
@@ -117,7 +123,8 @@ export const CustomEmbeds = {
                 fields: [
                     { name: 'ID', value: ids.map(x => `\`${x}\``).join('\n'), inline: true },
                     { name: 'Channel', value: channels.map(x => `<#${x}>`).join('\n'), inline: true },
-                    { name: 'Created At', value: createdAt.map(x => `<t:${x}:R>`).join('\n'), inline: true }
+                    { name: 'Sending At', value: sendingAt.map(x => (x > 0) ? `<t:${x}:R>` : 'Now').join('\n'), inline: true },
+
                 ],
                 color: CustomColours.info
             }
@@ -283,7 +290,7 @@ export const CustomEmbeds = {
                     color: CustomColours.purple
                 }
             }
-    
+
             return {
                 title: '🏆 Guild Messages Leaderboard',
                 fields: [
