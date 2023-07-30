@@ -1,5 +1,4 @@
 import commands from "../../commands";
-import { getGuildConfig } from "../../services";
 import { AutoCompleteCommand, Command } from "../../types"
 import { event } from "../../utils";
 
