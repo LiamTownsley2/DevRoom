@@ -80,7 +80,6 @@ async function getChartData(symbol: string, type: StockChartType, timescale: Sto
 
             let series = (timescale == 'intraday') ? '60min' : (timescale == 'daily') ? 'Daily' : (timescale == 'weekly') ? 'Weekly' : (timescale == 'monthly') ? 'Monthly' : undefined;
             const data = response.data[`Time Series (${series})`];
-            console.log(data);
             if (!data) return undefined;
             RESPONSE_CACHE.set(symbol, data);
         }

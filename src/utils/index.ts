@@ -39,7 +39,6 @@ export function convertTimeString(timestring: string) {
 export function hasEnoughTimePassed(lastSent: Date, delaySeconds: number): boolean {
     const currentTime = new Date();
     const timeDifferenceInSeconds = (currentTime.getTime() - lastSent.getTime()) / 1000;
-    console.log(timeDifferenceInSeconds);
     return timeDifferenceInSeconds >= delaySeconds;
 }
 
