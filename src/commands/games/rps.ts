@@ -1,4 +1,4 @@
-import { PermissionFlagsBits, SlashCommandBuilder, Collection } from 'discord.js'
+import { SlashCommandBuilder } from 'discord.js'
 import { command } from '../../utils'
 import { CustomEmbeds } from '../../config/embeds'
 import { RPSMove } from '../../types'
@@ -28,7 +28,9 @@ export default command(meta, async ({ interaction, client, config }) => {
     
     const move = interaction.options.getString('action', true);
     const challenge_user = interaction.options.getUser('challenge');
+    
     if (challenge_user) {
+        
         let returningMove = RPS_MOVES.find(x => x.author.id == challenge_user.id && x.opponent.id == interaction.user.id);
         if (returningMove) {
             (await interaction.channel!.messages.fetch(returningMove.message_id)).edit({

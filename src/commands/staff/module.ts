@@ -46,7 +46,6 @@ export default command(meta, async ({ interaction, client, config }) => {
             clearInterval(v as NodeJS.Timeout);
         })
     }
-    
     if (name == 'Message Tracker') config.message_tracker_module.enabled = isEnabled;
     if (name == 'Games') config.games_module.enabled = isEnabled;
 

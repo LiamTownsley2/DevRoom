@@ -1,4 +1,5 @@
 import { TextChannel, ButtonStyle, User, Message, ButtonBuilder, ChannelType, ActionRowBuilder, ChannelSelectMenuBuilder, StringSelectMenuOptionBuilder, MessageComponentInteraction, StringSelectMenuBuilder, ComponentType, APISelectMenuOption } from 'discord.js';
+import { CustomEmbeds } from '../config/embeds';
 
 /**
  * Ask a question to a user and expect a String response.
@@ -14,7 +15,7 @@ export async function askStringQuestion(question: string, channel: TextChannel, 
 
     try {
         const _question = await channel.send({
-            content: question
+            embeds: [CustomEmbeds.general.question(question)],
         });
 
         const _reply = await channel.awaitMessages({
@@ -57,7 +58,7 @@ export async function askButtonQuestion(question: string, channel: TextChannel, 
 
     try {
         const _question = await channel.send({
-            content: question,
+            embeds: [CustomEmbeds.general.question(question)],
             components: [actionRow]
         });
 
@@ -102,7 +103,7 @@ export async function askTextChannelQuestion(question: string, channel: TextChan
 
     try {
         const _question = await channel.send({
-            content: question,
+            embeds: [CustomEmbeds.general.question(question)],
             components: [select_menu]
         });
 
@@ -142,7 +143,7 @@ export async function askSelectMenuQuestion(question: string, channel: TextChann
 
     try {
         const _question = await channel.send({
-            content: question,
+            embeds: [CustomEmbeds.general.question(question)],
             components: [select_menu]
         });
 

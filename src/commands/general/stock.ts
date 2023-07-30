@@ -37,26 +37,31 @@ const meta = new SlashCommandBuilder()
         .setRequired(true)
     )
 
+const RESPONSE_CACHE = new Collection<string, any>();
+const CHART_CACHE = new Collection<string, Buffer>();
+
 export default command(meta, async ({ interaction, client }) => {
     await interaction.deferReply({ ephemeral: true })
+    
     const symbol = interaction.options.getString('symbol', true);
     const type = interaction.options.getString('type', true) as StockChartType;
     const timescale = interaction.options.getString('timescale', true) as StockChartScales;
 
     const chartImage = await getChartData(symbol, type, timescale);
-    if(!chartImage) {
+    if (!chartImage) {
         return interaction.editReply({
             embeds: [CustomEmbeds.modules.stock.stock_invalid()]
         })
     }
+
     return interaction.editReply({
         embeds: [CustomEmbeds.modules.stock.stock_vaild(symbol, type)],
-        files: [new AttachmentBuilder(chartImage).setName('stock.png')]
+        files: [
+            new AttachmentBuilder(chartImage)
+                .setName('stock.png')
+        ]
     });
 })
-
-const RESPONSE_CACHE = new Collection<string, any>();
-const CHART_CACHE = new Collection<string, Buffer>();
 
 async function getChartData(symbol: string, type: StockChartType, timescale: StockChartScales): Promise<Buffer | undefined> {
     try {
@@ -72,11 +77,11 @@ async function getChartData(symbol: string, type: StockChartType, timescale: Sto
             const response = await axios.get(
                 `https://www.alphavantage.co/query?function=TIME_SERIES_${timescale.toUpperCase()}&symbol=${symbol}&interval=60min&apikey=${keys.ALPHAVANTAGE_KEY}`
             );
-            
+
             let series = (timescale == 'intraday') ? '60min' : (timescale == 'daily') ? 'Daily' : (timescale == 'weekly') ? 'Weekly' : (timescale == 'monthly') ? 'Monthly' : undefined;
             const data = response.data[`Time Series (${series})`];
             console.log(data);
-            if(!data) return undefined;
+            if (!data) return undefined;
             RESPONSE_CACHE.set(symbol, data);
         }
 

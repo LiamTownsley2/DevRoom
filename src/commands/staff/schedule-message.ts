@@ -96,9 +96,13 @@ export default command(meta, async ({ interaction, client, config }) => {
 
                     let seconds = convertTimeString(custom_delay!);
 
-                    while (!convertTimeString(custom_delay!) || seconds > 604800) { // 604800 = 1 week
+                    while (!convertTimeString(custom_delay!) || seconds > 604800 || seconds < 60) { // 604800 = 1 week
+                        let warning;
+                        if(seconds > 604800) warning = 'You cannot schedule a message for longer than a week away.';
+                        if(seconds < 60) warning = 'You cannot schedule a message for less than a minute away.';
+
                         custom_delay = await askStringQuestion([
-                            '⚠️ **Warning**: You cannot schedule a message for longer than a week away.',
+                            `⚠️ **Warning**: ${warning}`,
                             '',
                             'Please enter how long of a gap you want inbetween the messages sending in timestring format `(ex: 2h 30m 25s)`'].join('\n'), interaction.channel as TextChannel, interaction.user);
                         seconds = convertTimeString(custom_delay!);
@@ -146,6 +150,7 @@ export default command(meta, async ({ interaction, client, config }) => {
                 const _timeout = TIMEOUT_LIST.get(delete_message.channel_id);
                 clearTimeout(_timeout as NodeJS.Timer);
                 clearInterval(_timeout as NodeJS.Timeout);
+                TIMEOUT_LIST.delete(delete_message.channel_id);
 
                 return interaction.editReply({
                     embeds: [CustomEmbeds.modules.schedule_messages.delete_success(delete_id)]
