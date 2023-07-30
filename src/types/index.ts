@@ -8,5 +8,6 @@ export * from './buttons';
 export * from './guild_config';
 export * from './scheduled_messages';
 export * from './user_stats';
+export * from './rps';
 
 export type RestrictedActivityType = ActivityType.Playing | ActivityType.Streaming | ActivityType.Listening | ActivityType.Watching | ActivityType.Competing | undefined;

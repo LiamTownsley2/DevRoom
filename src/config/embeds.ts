@@ -1,4 +1,4 @@
-import { APIEmbed } from 'discord.js';
+import { APIEmbed, User } from 'discord.js';
 import { ScheduledMessage } from '../types';
 import { getCommandReference } from '../utils';
 import CustomClient from '../client/CustomClient';
@@ -21,7 +21,7 @@ const DefaultEmbed: Partial<APIEmbed> = {
 
 export const CustomEmbeds = {
     schedule_module: {
-        async create_success(client:CustomClient): Promise<APIEmbed> {
+        async create_success(client: CustomClient): Promise<APIEmbed> {
             return {
                 ...DefaultEmbed,
                 title: '⏰ Scheduled Message Created',
@@ -30,7 +30,7 @@ export const CustomEmbeds = {
             }
         },
 
-        create_failure(reason?:string): APIEmbed {
+        create_failure(reason?: string): APIEmbed {
             return {
                 ...DefaultEmbed,
                 title: '❌ Scheduled Message Not Created',
@@ -100,12 +100,75 @@ export const CustomEmbeds = {
                     { name: 'Channel', value: channels.map(x => `<#${x}>`).join('\n'), inline: true },
                     { name: 'Created At', value: createdAt.map(x => `<t:${x}:R>`).join('\n'), inline: true }
                 ],
-                color: CustomColours.info            }
+                color: CustomColours.info
+            }
+        }
+    },
+
+    games: {
+        rps: {
+            move(playerMove: string, authorUser?: User, challengedUser?: User, challengedMove?: string): APIEmbed {
+                const emojis: { [key: string]: string } = {
+                    'rock': '🗻',
+                    'paper': '📰',
+                    'scissors': '✂'
+                }
+                const choices = ["rock", "paper", "scissors"];
+                const botMove = choices[Math.floor(Math.random() * choices.length)];
+
+                if (challengedUser) {
+                    let fields = [
+                        { name: `${authorUser?.username}'s Move`, value: '🐱‍👤 Move Hidden', inline: true },
+                        { name: `${challengedUser.username}'s Move`, value: `⌛ Awaiting Move...`, inline: true },
+                    ]
+                    if(challengedMove) {
+                        fields = [
+                            { name: `${authorUser?.username}'s Move`, value: `${emojis[playerMove]} \`${playerMove.toUpperCase()}\``, inline: true },
+                            { name: `${challengedUser.username}'s Move`, value: `${emojis[challengedMove]} \`${challengedMove.toUpperCase()}\``, inline: true },
+
+                        ]
+                    }
+                    return {
+                        ...DefaultEmbed,
+                        title: '🎮 Rock, Paper, Scissors!',
+                        fields,
+                        color: CustomColours.purple
+                    }
+                } else {
+                    return {
+                        ...DefaultEmbed,
+                        title: `🎮 Rock, Paper, Scissors!`,
+                        fields: [
+                            { name: 'You Picked', value: `${emojis[playerMove]} \`${playerMove.toUpperCase()}\``, inline: true },
+                            { name: '🤖 Picked', value: `${emojis[botMove]} \`${botMove.toUpperCase()}\``, inline: true },
+                        ],
+                        color: CustomColours.purple
+                    }
+                }
+            },
+
+            challenge_sent(sent_to: User): APIEmbed {
+                return {
+                    ...DefaultEmbed,
+                    title: '🎮 Challenge Sent',
+                    description: `You have sent a challenge for a game of Rock Paper Scissors to ${sent_to.toString()}.`,
+                    color: CustomColours.purple
+                }
+            },
+
+            move_sent(sent_to: User): APIEmbed {
+                return {
+                    ...DefaultEmbed,
+                    title: '🎮 Move Sent',
+                    description: `You have sent a move for a game of Rock Paper Scissors to ${sent_to.toString()}.`,
+                    color: CustomColours.purple
+                }
+            }
         }
     },
 
     not_found(id?: string): APIEmbed {
-        if(id) {
+        if (id) {
             return {
                 ...DefaultEmbed,
                 title: `❔ Your Scheduled Message Couldn't Be Found`,
