@@ -4,7 +4,7 @@ import stock from "./stock";
 
 const _ = category('General', [
     echo,
-    stock
+    stock,
 ], { emoji: '🌠', description: 'General purpose commands' })
 
 export default _;

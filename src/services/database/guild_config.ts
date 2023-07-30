@@ -79,7 +79,8 @@ function _getDefaultGuildConfig(guild_id: string): GuildConfig {
         welcome_module: {
             enabled: true,
             discord_mode: true,
-            custom_welcome_message: null
+            custom_welcome_message: null,
+            welcome_channel: null
         }
     }
 }

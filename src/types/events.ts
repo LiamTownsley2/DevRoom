@@ -1,5 +1,6 @@
 import { Awaitable, ClientEvents } from "discord.js"
 import CustomClient from "../client/CustomClient"
+import { GuildConfig } from "."
 
 export interface EventProps {
     client: CustomClient

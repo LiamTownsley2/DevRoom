@@ -1,7 +1,21 @@
 import { APIEmbed, User } from 'discord.js';
-import { ScheduledMessage, StockChartType } from '../types';
+import { GuildConfig, ScheduledMessage, StockChartType } from '../types';
 import { getCommandReference } from '../utils';
 import CustomClient from '../client/CustomClient';
+
+const DISCORD_WELCOME = [
+    '{{USER}} joined the party.',
+    '{{USER}} just showed up!',
+    'A wild {{USER}} has appeared.',
+    'Welcome {{USER}}, Say hi!',
+    '{{USER}} is here.',
+    'Yay you made it, {{USER}}!',
+    'Good to see you, {{USER}}.',
+    '{{USER}} just landed.',
+    'Glad you\'re here, {{USER}}.',
+    'Welcome. {{USER}}. We hope you\'ve brought pizza.',
+    '{{USER}} just slide into the server.'
+];
 
 export const CustomColours = {
     general: 0x1abc9c,
@@ -121,7 +135,7 @@ export const CustomEmbeds = {
                         { name: `${authorUser?.username}'s Move`, value: '🐱‍👤 Move Hidden', inline: true },
                         { name: `${challengedUser.username}'s Move`, value: `⌛ Awaiting Move...`, inline: true },
                     ]
-                    if(challengedMove) {
+                    if (challengedMove) {
                         fields = [
                             { name: `${authorUser?.username}'s Move`, value: `${emojis[playerMove]} \`${playerMove.toUpperCase()}\``, inline: true },
                             { name: `${challengedUser.username}'s Move`, value: `${emojis[challengedMove]} \`${challengedMove.toUpperCase()}\``, inline: true },
@@ -204,12 +218,12 @@ export const CustomEmbeds = {
     },
 
     stock: {
-        stock_vaild(symbol: string, type:StockChartType): APIEmbed {
+        stock_vaild(symbol: string, type: StockChartType): APIEmbed {
             return {
                 title: `📈 Stock Market Data`,
                 fields: [
                     { name: 'Symbol', value: `\`$${symbol}\``, inline: true },
-                    { name: 'Data Filter', value: `${type.toUpperCase()}`, inline: true}
+                    { name: 'Data Filter', value: `${type.toUpperCase()}`, inline: true }
                 ],
                 image: {
                     url: 'attachment://stock.png'
@@ -227,6 +241,30 @@ export const CustomEmbeds = {
                 title: '📈 Stock Invalid',
                 description: 'The stock you entered cannot be found. Are you sure this is a valid stock symbol?',
                 color: CustomColours.warning
+            }
+        }
+    },
+
+    welcome_module: {
+        member_join(user: User, discord_mode: boolean, config: GuildConfig): APIEmbed {
+            let message: string | undefined;
+            if (discord_mode) {
+                let _discordMessage = DISCORD_WELCOME[Math.floor(Math.random() * DISCORD_WELCOME.length)]
+                message = _discordMessage;
+            } else {
+                message = config.welcome_module.custom_welcome_message ?? undefined
+            }
+
+            message = message?.replace(/{{USER}}/gi, user.toString()).replace(/{{USERNAME}}/gi, user.username);
+
+
+            return {
+                ...DefaultEmbed,
+                title: '↪ Member Joined',
+                description: message ?? `Welcome ${user.toString()} to the guild!`,
+                thumbnail: {
+                    url: user.displayAvatarURL()
+                }
             }
         }
     }
