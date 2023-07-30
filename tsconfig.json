@@ -28,5 +28,10 @@
   "include": [
     "src/*",
     "src/**/*"
-  ]
+  ],
+  "typedocOptions": {
+    "entryPoints": ["./src/index.ts", "./src/utils/[^_]*.ts", "./src/services/[^_]*.ts", "./src/client/[^_]*.ts", "./src/types/[^_]*.ts"],
+    "entryPointStrategy": "expand",
+    "out": "./docs",
+  }
 }

@@ -8,6 +8,11 @@ export * from './events';
 export * from './buttons';
 export * from './questions';
 
+/**
+ * Convert a Time Strings into seconds.
+ * @param timestring The timestring (ex. 2d 30m 25s)
+ * @returns number
+ */
 export function convertTimeString(timestring: string) {
     const timesplit = timestring.split(' ');
     let final_time = 0;
@@ -25,6 +30,12 @@ export function convertTimeString(timestring: string) {
     return final_time;
 }
 
+/**
+ * Check if enough time has passed and if the provided time has elapsed.
+ * @param lastSent The date you want to check against.
+ * @param delaySeconds How many seconds to check have elapsed since the lastSent date.
+ * @returns boolean
+ */
 export function hasEnoughTimePassed(lastSent: Date, delaySeconds: number): boolean {
     const currentTime = new Date();
     const timeDifferenceInSeconds = (currentTime.getTime() - lastSent.getTime()) / 1000;
@@ -32,6 +43,11 @@ export function hasEnoughTimePassed(lastSent: Date, delaySeconds: number): boole
     return timeDifferenceInSeconds >= delaySeconds;
 }
 
+/**
+ * Check how long it is until the targetTime needs executed again and then return the delay needed.
+ * @param targetTime A TimeOFDay object
+ * @returns number
+ */
 export function getTimeUntilTargetTime(targetTime: TimeOfDay): number {
     const now = new Date();
     const targetDate = new Date(now);
@@ -47,8 +63,17 @@ export function getTimeUntilTargetTime(targetTime: TimeOfDay): number {
     return targetDate.getTime() - now.getTime();
 }
 
+/**
+ * This collection is used to ensure that scheduled messages can be disabled once started. It stores timer IDs.
+ */
 export const TIMEOUT_LIST: Collection<string, NodeJS.Timer | NodeJS.Timeout> = new Collection();
 
+/**
+ * Schedule for a message to be sent and looped.
+ * @param scheduledMessage The ScheduledMessage Database object.
+ * @param client The CustomClient object.
+ * @returns 
+ */
 export async function scheduleExecution(scheduledMessage: ScheduledMessage, client: CustomClient) {
     const channel = await client.channels.fetch(scheduledMessage.channel_id) as TextChannel;
     const config = await getGuildConfig(scheduledMessage.guild_id);

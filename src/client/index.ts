@@ -3,10 +3,13 @@ import events from '../events';
 import { connectToDatabase } from '../services/database';
 import CustomClient from './CustomClient';
 import { registerEvents } from '../utils';
-
 const _customClient = new CustomClient();
 
-(async () => {
+/**
+* This function will initilise the bot and connect it to all of the relevant services.
+* @return void
+*/
+async function start() {
     console.log('[client]', 'Attempting connection to Database.')
     await connectToDatabase();
 
@@ -23,4 +26,8 @@ const _customClient = new CustomClient();
             console.error(err)
             process.exit(1);
         });
+}
+
+(async () => {
+    await start();
 })();

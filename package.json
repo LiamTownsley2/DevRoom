@@ -5,7 +5,8 @@
     "main": "index.js",
     "scripts": {
         "start": "tsc --build && cd dist && node --trace-warnings index",
-        "build": "tsc --build",
+        "build-start": "npm run build-docs && tsc --build && npm run start",
+        "build-docs": "npx typedoc",
         "deploy": "cross-env IS_SCRIPT=true ts-node src/deploy",
         "deploy-production": "cross-env NODE_ENV=production npm run deploy"
     },
@@ -20,7 +21,8 @@
         "fs-extra": "^11.1.1",
         "moment": "^2.29.4",
         "mongodb": "4.0",
-        "path": "^0.12.7"
+        "path": "^0.12.7",
+        "typedoc": "^0.24.8"
     },
     "devDependencies": {
         "@types/fs-extra": "^11.0.1",

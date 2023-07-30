@@ -1,6 +1,6 @@
 import { collections } from "..";
 import { GuildConfig } from "../../types";
-import CustomCache from "../../utils/custom_cache";
+import CustomCache from "../../utils/_custom_cache";
 
 export const GUILD_CONFIG_EXPIRATION = 5; // in minutes
 export const guild_config_cache = new CustomCache<GuildConfig>()

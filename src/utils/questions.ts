@@ -1,5 +1,12 @@
 import { TextChannel, ButtonStyle, User, Message, ButtonBuilder, ChannelType, ActionRowBuilder, ChannelSelectMenuBuilder, StringSelectMenuOptionBuilder, MessageComponentInteraction, StringSelectMenuBuilder, ComponentType, APISelectMenuOption } from 'discord.js';
 
+/**
+ * Ask a question to a user and expect a String response.
+ * @param question The question you want to ask the user.
+ * @param channel The question the user is getting asked the question in.
+ * @param user The user you are asking the question to.
+ * @returns Promise<string | undefined>
+ */
 export async function askStringQuestion(question: string, channel: TextChannel, user: User): Promise<string | undefined> {
     const questionFilter = (m: Message) => {
         return m.author.id == user.id;
@@ -26,6 +33,14 @@ export async function askStringQuestion(question: string, channel: TextChannel, 
     }
 }
 
+/**
+ * Ask a button question to a user and expect a number response indicating what button they have pressed.
+ * @param question The question you want to ask the user.
+ * @param channel The question the user is getting asked the question in.
+ * @param author The user you are asking the question to.
+ * @param emojis The emojis you want to append to the button.
+ * @returns Promise<number | undefined>
+ */
 export async function askButtonQuestion(question: string, channel: TextChannel, author: User, emojis: string[]): Promise<number | undefined> {
     let buttons = emojis.map((x, i) => new ButtonBuilder()
         .setCustomId(`question_answer:${i}`)
@@ -64,6 +79,13 @@ export async function askButtonQuestion(question: string, channel: TextChannel, 
     }
 }
 
+/**
+ * Ask a user a question and expect a TextChannel ID as a response.
+ * @param question The question you want to ask the user.
+ * @param channel The channel the user is getting asked the question in.
+ * @param author The user you are asking the question to.
+ * @returns Promise<string | undefined>
+ */
 export async function askTextChannelQuestion(question: string, channel: TextChannel, author: User): Promise<string | undefined> {
     const questionFilter = async (i: MessageComponentInteraction) => {
         await i.deferUpdate()
@@ -100,6 +122,14 @@ export async function askTextChannelQuestion(question: string, channel: TextChan
     }
 }
 
+/**
+ * 
+ * @param question The question you want to ask the user.
+ * @param channel The channel the user is getting asked the question in.
+ * @param author The user you are asking the question to.
+ * @param options An array of APISelectMenuOption
+ * @returns Promise<string | undefined>
+ */
 export async function askSelectMenuQuestion(question: string, channel: TextChannel, author: User, options: APISelectMenuOption[]): Promise<string | undefined> {
     const questionFilter = async (i: MessageComponentInteraction) => {
         await i.deferUpdate()

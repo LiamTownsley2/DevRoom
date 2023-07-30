@@ -55,7 +55,7 @@ export default command(meta, async ({ interaction, client, config }) => {
                 '1️⃣ **Time of Day**: You can use this option to select what Time of Day you want this message to be sent.',
                 '2️⃣ **Custom Delay**: This message will be sent in the selected channel on a delay that you determine.'
             ].join('\n'), interaction.channel as TextChannel, interaction.user, ['1️⃣', '2️⃣']);
-            
+
             switch (frequency) {
                 case 1:
                     let time_of_day = await askStringQuestion('Please enter what time of the day you would like this message to be sent at, in 24 hour notation. (ex: 23:00)?', interaction.channel as TextChannel, interaction.user);
@@ -67,7 +67,7 @@ export default command(meta, async ({ interaction, client, config }) => {
                     }
                     let _time = time_of_day!.split(':');
 
-                    let one_schedule:ScheduledMessage = {
+                    let one_schedule: ScheduledMessage = {
                         guild_id: interaction.guild.id,
                         channel_id: channel!,
                         message: content!,
@@ -103,8 +103,8 @@ export default command(meta, async ({ interaction, client, config }) => {
                             'Please enter how long of a gap you want inbetween the messages sending in timestring format `(ex: 2h 30m 25s)`'].join('\n'), interaction.channel as TextChannel, interaction.user);
                         seconds = convertTimeString(custom_delay!);
                     }
-                    
-                    let two_schedule:ScheduledMessage = {
+
+                    let two_schedule: ScheduledMessage = {
                         guild_id: interaction.guild.id,
                         channel_id: channel!,
                         author_id: interaction.user.id,
@@ -121,7 +121,7 @@ export default command(meta, async ({ interaction, client, config }) => {
 
                     await scheduleExecution(two_schedule, client);
                     const res = await insertScheduledMessageToDatabase(two_schedule)
-                    if(!res) {
+                    if (!res) {
                         return interaction.editReply({
                             embeds: [CustomEmbeds.modules.schedule_messages.create_failure(`There is already a scheduled message for this channel. Please remove it before trying again. ${await getCommandReference('schedule-message', 'list', client)}`)]
                         })
