@@ -1,6 +1,7 @@
 import { PermissionFlagsBits, SlashCommandBuilder, ChannelType } from 'discord.js'
 import { command } from '../../utils'
 import { insertGuildConfigToDatabase } from '../../services';
+import { CustomEmbeds } from '../../config/embeds';
 
 const meta = new SlashCommandBuilder()
     .setName('manage-welcome')
@@ -56,6 +57,10 @@ export default command(meta, async ({ interaction, client, config }) => {
             config.welcome_module.welcome_channel = channel.id;
             break;
     }
+
+    await interaction.reply({
+        embeds: [CustomEmbeds.general.success('✅ Welcome Config Updated', `**Type**: \`${interaction.options.getSubcommand(true).split('-')[1].toUpperCase()}\`\nValue updated successfully.`)]
+    })
 
     await insertGuildConfigToDatabase(config);
 })
