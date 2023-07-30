@@ -33,7 +33,7 @@ const meta = new SlashCommandBuilder()
             .setRequired(true)
         )
     )
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild);
 
 
 export default command(meta, async ({ interaction, client, config }) => {

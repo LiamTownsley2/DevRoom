@@ -37,7 +37,7 @@ const meta = new SlashCommandBuilder()
             .addChannelTypes(ChannelType.GuildText, ChannelType.PrivateThread, ChannelType.PublicThread, ChannelType.AnnouncementThread)
         )
     )
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild);
 
 
 export default command(meta, async ({ interaction, client, config }) => {

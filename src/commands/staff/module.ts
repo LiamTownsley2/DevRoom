@@ -26,7 +26,7 @@ const meta = new SlashCommandBuilder()
             .setRequired(true)
         )
     )
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild);
 
 
 const MODULES = ['Welcome', "Scheduled Messages", "Message Tracker", "Games"];
