@@ -192,5 +192,14 @@ export const CustomEmbeds = {
             description,
             color: CustomColours.info
         }
+    },
+
+    command_disabled(): APIEmbed {
+        return {
+            ...DefaultEmbed,
+            title: '🔒 Command Disabled',
+            description: 'This command has been disabled by a Guild Administrator.',
+            color: CustomColours.warning
+        }
     }
 }

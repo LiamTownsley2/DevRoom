@@ -3,7 +3,7 @@ import { command } from '../../utils'
 import { CustomEmbeds } from '../../config/embeds'
 import { RPSMove } from '../../types'
 
-const RPS_MOVES:RPSMove[] = [];
+const RPS_MOVES: RPSMove[] = [];
 
 const meta = new SlashCommandBuilder()
     .setName('rps')
@@ -24,12 +24,13 @@ const meta = new SlashCommandBuilder()
     )
 
 export default command(meta, async ({ interaction, client, config }) => {
-    if(!config.games_module.enabled) return;
+    if (!config.games_module.enabled) return interaction.reply({ embeds: [CustomEmbeds.command_disabled()], ephemeral: true });
+    
     const move = interaction.options.getString('action', true);
     const challenge_user = interaction.options.getUser('challenge');
     if (challenge_user) {
         let returningMove = RPS_MOVES.find(x => x.author.id == challenge_user.id && x.opponent.id == interaction.user.id);
-        if(returningMove) {
+        if (returningMove) {
             (await interaction.channel!.messages.fetch(returningMove.message_id)).edit({
                 embeds: [CustomEmbeds.games.rps.move(returningMove.author_move, returningMove.author, returningMove.opponent, move)]
             });
@@ -39,7 +40,7 @@ export default command(meta, async ({ interaction, client, config }) => {
                 ephemeral: true
             })
         }
-        
+
         const _challenge = await interaction.channel!.send({
             content: `${challenge_user.toString()}, you have been challenged to a game by ${interaction.user.toString()}`,
             embeds: [CustomEmbeds.games.rps.move(move, interaction.user, challenge_user)],
