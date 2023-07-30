@@ -9,7 +9,7 @@ const meta = new SlashCommandBuilder()
     .setDescription('Setup the bot and configure your guild!')
 
 export default command(meta, async ({ interaction, client, config }) => {
-    await interaction.deferReply();
+    await interaction.deferReply({ ephemeral: true });
 
     for (const module of MODULES) {
         const isEnabled = await askButtonQuestion(`Would you like to enable the \`${module.toUpperCase()}\` module?`, interaction.channel as TextChannel, interaction.user, ['✅', '❌']) == 1

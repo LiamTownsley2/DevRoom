@@ -285,7 +285,7 @@ export const CustomEmbeds = {
                     description: [
                         'This guild has been configured using the **setup** command.',
                         '',
-                        `If you need any assistance in using this bot, use the ${await getCommandReference('guide', undefined, client)}`
+                        `If you need any assistance in using this bot, use the ${await getCommandReference('guide', undefined, client)} command!`
                     ].join('\n')
                 }
             }
