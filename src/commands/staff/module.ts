@@ -29,7 +29,7 @@ const meta = new SlashCommandBuilder()
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild);
 
 
-const MODULES = ['Welcome', "Scheduled Messages", "Message Tracker", "Games"];
+export const MODULES = ['Welcome', "Scheduled Messages", "Message Tracker", "Games"];
 
 export default command(meta, async ({ interaction, client, config }) => {
     await interaction.deferReply({ ephemeral: true });

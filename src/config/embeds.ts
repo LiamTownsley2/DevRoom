@@ -275,11 +275,25 @@ export const CustomEmbeds = {
                     color: CustomColours.purple
                 }
             },
+        },
+
+        setup: {
+            async server_configured(client:CustomClient): Promise<APIEmbed> {
+                return {
+                    ...DefaultEmbed,
+                    title: '⚙️ Guild Configured Successfully',
+                    description: [
+                        'This guild has been configured using the **setup** command.',
+                        '',
+                        `If you need any assistance in using this bot, use the ${await getCommandReference('guide', undefined, client)}`
+                    ].join('\n')
+                }
+            }
         }
     },
 
     general: {
-        question(question:string): APIEmbed {
+        question(question: string): APIEmbed {
             return {
                 ...DefaultEmbed,
                 title: '❔ Please answer this Question',
