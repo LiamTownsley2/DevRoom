@@ -121,14 +121,14 @@ export default command(meta, async ({ interaction, client }) => {
                     const res = await insertScheduledMessageToDatabase(two_schedule)
                     if(!res) {
                         return interaction.editReply({
-                            embeds: [CustomEmbeds.schedule_module.create_failure(`There is already a scheduled message for this channel. Please remove it before trying again. ${await getCommandReference('schedule-message', 'list', client)}`)]
+                            embeds: [CustomEmbeds.modules.schedule_messages.create_failure(`There is already a scheduled message for this channel. Please remove it before trying again. ${await getCommandReference('schedule-message', 'list', client)}`)]
                         })
                     }
                     break;
             }
 
             return interaction.editReply({
-                embeds: [await CustomEmbeds.schedule_module.create_success(client)]
+                embeds: [await CustomEmbeds.modules.schedule_messages.create_success(client)]
             });
 
             break;
@@ -136,7 +136,7 @@ export default command(meta, async ({ interaction, client }) => {
             const delete_id = interaction.options.getString('id', true);
             const delete_message = await getScheduledMessages(delete_id);
             if (!delete_message) return interaction.editReply({
-                embeds: [CustomEmbeds.not_found(delete_id)]
+                embeds: [CustomEmbeds.general.not_found(delete_id)]
             });
 
             if (delete_message.author_id == interaction.user.id || !interaction.memberPermissions?.has('Administrator')) {
@@ -146,11 +146,11 @@ export default command(meta, async ({ interaction, client }) => {
                 clearInterval(_timeout as NodeJS.Timeout);
 
                 return interaction.editReply({
-                    embeds: [CustomEmbeds.schedule_module.delete_success(delete_id)]
+                    embeds: [CustomEmbeds.modules.schedule_messages.delete_success(delete_id)]
                 });
             } else {
                 return interaction.editReply({
-                    embeds: [CustomEmbeds.schedule_module.delete_failure(delete_id, 'You do not have permission to edit this Scheduled Message as you either did not create it nor do you have Administrator permission.')]
+                    embeds: [CustomEmbeds.modules.schedule_messages.delete_failure(delete_id, 'You do not have permission to edit this Scheduled Message as you either did not create it nor do you have Administrator permission.')]
                 })
             }
             break;
@@ -158,21 +158,21 @@ export default command(meta, async ({ interaction, client }) => {
             const view_id = interaction.options.getString('id', true);
             const view_message = await getScheduledMessages(view_id);
             if (!view_message) return interaction.editReply({
-                embeds: [CustomEmbeds.not_found(view_id)]
+                embeds: [CustomEmbeds.general.not_found(view_id)]
             });
 
             return interaction.editReply({
-                embeds: [CustomEmbeds.schedule_module.view(view_message)],
+                embeds: [CustomEmbeds.modules.schedule_messages.view(view_message)],
             })
             break;
         case 'list':
             const list_messages = await getGuildScheduledMessages(interaction.guild.id);
             if (!list_messages) return interaction.editReply({
-                embeds: [CustomEmbeds.not_found()]
+                embeds: [CustomEmbeds.general.not_found()]
             });
 
             return interaction.editReply({
-                embeds: [await CustomEmbeds.schedule_module.list(list_messages, client)]
+                embeds: [await CustomEmbeds.modules.schedule_messages.list(list_messages, client)]
             })
             break;
 

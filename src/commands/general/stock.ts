@@ -46,11 +46,11 @@ export default command(meta, async ({ interaction, client }) => {
     const chartImage = await getChartData(symbol, type, timescale);
     if(!chartImage) {
         return interaction.editReply({
-            embeds: [CustomEmbeds.stock.stock_invalid()]
+            embeds: [CustomEmbeds.modules.stock.stock_invalid()]
         })
     }
     return interaction.editReply({
-        embeds: [CustomEmbeds.stock.stock_vaild(symbol, type)],
+        embeds: [CustomEmbeds.modules.stock.stock_vaild(symbol, type)],
         files: [new AttachmentBuilder(chartImage).setName('stock.png')]
     });
 })

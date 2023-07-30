@@ -24,7 +24,7 @@ export default command(meta, async ({ interaction, client }) => {
 
 
     const _reply = await interaction.reply({
-        embeds: [CustomEmbeds.message_tracking_module.leaderboard(arr, page_num, max_pages, PAGE_LEGNTH)],
+        embeds: [CustomEmbeds.modules.message_tracking.leaderboard(arr, page_num, max_pages, PAGE_LEGNTH)],
         components: [await getPageButtons(page_num, max_pages)]
     });
 
@@ -43,7 +43,7 @@ export default command(meta, async ({ interaction, client }) => {
         if (col.customId.endsWith('right')) {
             cur_page_num++;
             await interaction.editReply({
-                embeds: [CustomEmbeds.message_tracking_module.leaderboard(
+                embeds: [CustomEmbeds.modules.message_tracking.leaderboard(
                     getPageFromArray(list_res!, cur_page_num, PAGE_LEGNTH),
                     cur_page_num,
                     max_pages,
@@ -55,7 +55,7 @@ export default command(meta, async ({ interaction, client }) => {
         else if (col.customId.endsWith('left')) {
             cur_page_num--;
             await interaction.editReply({
-                embeds: [CustomEmbeds.message_tracking_module.leaderboard(
+                embeds: [CustomEmbeds.modules.message_tracking.leaderboard(
                     getPageFromArray(list_res!, cur_page_num, PAGE_LEGNTH),
                     cur_page_num,
                     max_pages,

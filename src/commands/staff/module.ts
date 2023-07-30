@@ -46,7 +46,7 @@ export default command(meta, async ({ interaction, client, config }) => {
     await insertGuildConfigToDatabase(config);
     
     return interaction.editReply({
-        embeds: [CustomEmbeds.success(`${(value == true) ? '✅ Module Successfully Enabled' : '❌ Module Successfully Disabled'}`, `The action performed on module \`${name}\` was a success.`)]
+        embeds: [CustomEmbeds.general.success(`${(value == true) ? '✅ Module Successfully Enabled' : '❌ Module Successfully Disabled'}`, `The action performed on module \`${name}\` was a success.`)]
     })
 }, async ({ interaction }) => {
     if (!interaction.guild) return;

@@ -11,6 +11,6 @@ export default event('guildMemberAdd', async ({ client }, member) => {
 
     const welcome_channel = await client.channels.fetch(config.welcome_module.welcome_channel) as TextChannel;
     welcome_channel.send({
-        embeds: [CustomEmbeds.welcome_module.member_join(member.user, config.welcome_module.discord_mode, config)]
+        embeds: [CustomEmbeds.modules.welcome.member_join(member.user, config.welcome_module.discord_mode, config)]
     })
 })
