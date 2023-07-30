@@ -68,7 +68,7 @@ function _getDefaultGuildConfig(guild_id: string): GuildConfig {
     return {
         guild_id,
         scheduled_messages_module: {
-            enabled: false
+            enabled: true
         },
         games_module: {
             enabled: true
