@@ -5,8 +5,9 @@
     "main": "index.js",
     "scripts": {
         "start": "tsc --build && cd dist && node --trace-warnings index",
-        "build-start": "npm run build-docs && tsc --build && npm run start",
+        "build": "npm run build-docs && tsc --build",
         "build-docs": "npx typedoc",
+        "build-start": "npm run build-docs && npm run start",
         "deploy": "cross-env IS_SCRIPT=true ts-node src/deploy",
         "deploy-production": "cross-env NODE_ENV=production npm run deploy"
     },
