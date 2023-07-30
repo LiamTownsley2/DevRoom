@@ -46,7 +46,7 @@ export const CustomEmbeds = {
                 return {
                     ...DefaultEmbed,
                     title: '⏰ Scheduled Message Created',
-                    description: `Your scheduled message has been created successfully, use the ${await getCommandReference('schedule-message', 'list', client,)} to view all the active scheduled messages.`,
+                    description: `Your scheduled message has been created successfully, use the ${await getCommandReference('scheduled-message', 'list', client,)} to view all the active scheduled messages.`,
                     color: CustomColours.info
                 }
             },
@@ -109,7 +109,7 @@ export const CustomEmbeds = {
                 if (!messages || messages.length == 0) return {
                     ...DefaultEmbed,
                     title: '🔗 All Guild Scheduled Messages',
-                    description: `There are no scheduled messages created yet, use the ${await getCommandReference('schedule-message', 'create', client)} command to create one.`
+                    description: `There are no scheduled messages created yet, use the ${await getCommandReference('scheduled-message', 'create', client)} command to create one.`
                 }
                 for (const message of messages) {
                     ids.push(message._id);
@@ -293,7 +293,7 @@ export const CustomEmbeds = {
 
             async guide(client: CustomClient, guild_id: string): Promise<APIEmbed> {
                 const config = await getGuildConfig(guild_id);
-                let welcome_channel = (config.welcome_module.welcome_channel ?? false) ? `<#${config.welcome_module.welcome_channel}>` : undefined;
+                let welcome_channel = (config.welcome_module.welcome_channel ?? false) ? await client.channels.fetch(config.welcome_module.welcome_channel!) : undefined;
                 return {
                     ...DefaultEmbed,
                     title: '📡 Bot Feature\'s Guide',
@@ -301,7 +301,7 @@ export const CustomEmbeds = {
                         '**Welcome Module**',
                         `> **Enabled**: ${(config.welcome_module.enabled == true) ? '✅' : '❌'}`,
                         (config.welcome_module.enabled == true) ? [
-                            `> **Output Channel**: ${(welcome_channel) ? welcome_channel : `Channel not set, use the ${await getCommandReference('manage-welcome', 'set-channel', client)} command to set the channel.`}`,
+                            `> **Output Channel**: ${(welcome_channel) ? welcome_channel.toString() : `Channel not set, use the ${await getCommandReference('manage-welcome', 'set-channel', client)} command to set the channel.`}`,
                             `> **Output Message**: ${(config.welcome_module.discord_mode == false && config.welcome_module.custom_welcome_message) ? `${config.welcome_module.custom_welcome_message}` : `Module is on Discord Mode, you can change this with the ${await getCommandReference('manage-welcome', 'set-mode', client)} command`}`,
                         ].join('\n') : `You can use the ${await getCommandReference('module', 'enable', client)} command to enable this module.`,
                         '',

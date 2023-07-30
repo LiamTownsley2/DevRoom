@@ -120,7 +120,7 @@ export default command(meta, async ({ interaction, client, config }) => {
                     const res = await insertScheduledMessageToDatabase(two_schedule)
                     if (!res) {
                         return interaction.editReply({
-                            embeds: [CustomEmbeds.modules.schedule_messages.create_failure(`There is already a scheduled message for this channel. Please remove it before trying again. ${await getCommandReference('schedule-message', 'list', client)}`)]
+                            embeds: [CustomEmbeds.modules.schedule_messages.create_failure(`There is already a scheduled message for this channel. Please remove it before trying again. ${await getCommandReference('scheduled-message', 'list', client)}`)]
                         })
                     }
                     break;
