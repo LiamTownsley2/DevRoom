@@ -203,21 +203,31 @@ export const CustomEmbeds = {
         }
     },
 
-    stock(symbol: string, type:StockChartType): APIEmbed {
-        return {
-            title: `📈 Stock Market Data`,
-            fields: [
-                { name: 'Symbol', value: `\`$${symbol}\``, inline: true },
-                { name: 'Data Filter', value: `${type.toUpperCase()}`, inline: true}
-            ],
-            image: {
-                url: 'attachment://stock.png'
-            },
-            footer: {
-                text: 'Powered by Alpha Vantage API.'
-            },
-            color: CustomColours.info,
-            timestamp: new Date().toISOString()
+    stock: {
+        stock_vaild(symbol: string, type:StockChartType): APIEmbed {
+            return {
+                title: `📈 Stock Market Data`,
+                fields: [
+                    { name: 'Symbol', value: `\`$${symbol}\``, inline: true },
+                    { name: 'Data Filter', value: `${type.toUpperCase()}`, inline: true}
+                ],
+                image: {
+                    url: 'attachment://stock.png'
+                },
+                footer: {
+                    text: 'Powered by Alpha Vantage API.'
+                },
+                color: CustomColours.info,
+                timestamp: new Date().toISOString()
+            }
+        },
+
+        stock_invalid(): APIEmbed {
+            return {
+                title: '📈 Stock Invalid',
+                description: 'The stock you entered cannot be found. Are you sure this is a valid stock symbol?',
+                color: CustomColours.warning
+            }
         }
     }
 }

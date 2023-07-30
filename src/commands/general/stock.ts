@@ -31,9 +31,13 @@ export default command(meta, async ({ interaction, client }) => {
     const type = interaction.options.getString('type', true) as StockChartType;
 
     const chartImage = await getChartData(symbol, type);
-
+    if(!chartImage) {
+        return interaction.editReply({
+            embeds: [CustomEmbeds.stock.stock_invalid()]
+        })
+    }
     return interaction.editReply({
-        embeds: [CustomEmbeds.stock(symbol, type)],
+        embeds: [CustomEmbeds.stock.stock_vaild(symbol, type)],
         files: [new AttachmentBuilder(chartImage).setName('stock.png')]
     });
 })
@@ -41,7 +45,7 @@ export default command(meta, async ({ interaction, client }) => {
 const RESPONSE_CACHE = new Collection<string, any>();
 const CHART_CACHE = new Collection<string, Buffer>();
 
-async function getChartData(symbol: string, type: StockChartType): Promise<Buffer> {
+async function getChartData(symbol: string, type: StockChartType): Promise<Buffer | undefined> {
     try {
         const type_list: { [key: string]: string } = {
             'open': '1. open',
@@ -57,6 +61,7 @@ async function getChartData(symbol: string, type: StockChartType): Promise<Buffe
             );
             
             const data = response.data['Time Series (60min)'];
+            if(!data) return undefined;
             RESPONSE_CACHE.set(symbol, data);
         }
 
