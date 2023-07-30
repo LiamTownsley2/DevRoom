@@ -4,4 +4,5 @@ export interface Keys {
     MAIN_GUILD_ID: string;
     DB_CONN_STRING: string;
     DB_NAME: string;
+    ALPHAVANTAGE_KEY: string;
 };

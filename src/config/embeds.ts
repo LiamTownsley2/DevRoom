@@ -241,7 +241,7 @@ export const CustomEmbeds = {
                     url: 'attachment://stock.png'
                 },
                 footer: {
-                    text: 'Chart provided by Alpha Vantage API.'
+                    text: 'Chart provided by quickchart.io | Data Provided by Alpha Vantage API.'
                 },
                 color: CustomColours.info,
                 timestamp: new Date().toISOString()

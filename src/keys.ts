@@ -6,6 +6,7 @@ const keys: Keys = {
     MAIN_GUILD_ID: process.env.MAIN_GUILD_ID ?? 'nd',
     DB_CONN_STRING: process.env.DB_CONN_STRING ?? 'nd',
     DB_NAME: process.env.DB_NAME ?? 'nd',
+    ALPHAVANTAGE_KEY: process.env.ALPHAVANTAGE_KEY ?? 'nd'
 }
 
 for (const [k, v] of Object.entries(keys)) {
