@@ -1,8 +1,5 @@
-import { TextChannel } from 'discord.js';
-import { event, getTimeUntilTargetTime, scheduleExecution } from '../utils';
-import { ScheduledMessage } from '../types';
-import { getAllScheduledMessages, guild_config_cache, insertScheduledMessageToDatabase } from '../services';
-import CustomClient from '../client/CustomClient';
+import { event, scheduleExecution } from '../utils';
+import { getAllScheduledMessages, guild_config_cache } from '../services';
 
 export default event('ready', async ({ client }) => {
     if (!client.user) return;
