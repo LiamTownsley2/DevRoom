@@ -1,6 +1,7 @@
 import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
 import { command } from '../../utils'
 import { insertGuildConfigToDatabase } from '../../services';
+import { CustomEmbeds } from '../../config/embeds';
 
 const meta = new SlashCommandBuilder()
     .setName('module')
@@ -31,6 +32,7 @@ const meta = new SlashCommandBuilder()
 const MODULES = ['Welcome', "Scheduled Messages", "Message Tracker", "Games"];
 
 export default command(meta, async ({ interaction, client, config }) => {
+    await interaction.deferReply({ ephemeral: true });
     const name = interaction.options.getString('name', true);
     const value = interaction.options.getSubcommand(true) == 'enable';
     
@@ -43,10 +45,9 @@ export default command(meta, async ({ interaction, client, config }) => {
 
     await insertGuildConfigToDatabase(config);
     
-    return interaction.reply({
-        ephemeral: true,
-        content: 'Success!'
-    });
+    return interaction.editReply({
+        embeds: [CustomEmbeds.success(`${(value == true) ? '✅ Module Successfully Enabled' : '❌ Module Successfully Disabled'}`, `The action performed on module \`${name}\` was a success.`)]
+    })
 }, async ({ interaction }) => {
     if (!interaction.guild) return;
     const focusedValue = interaction.options.getFocused();

@@ -12,6 +12,15 @@ export async function getGuildScheduledMessages(guild_id:string): Promise<Schedu
     }
 }
 
+export async function getScheduledMessages(id: string): Promise<ScheduledMessage | undefined> {
+    try {
+        let res = await collections.scheduled_messages?.findOne({ _id: new ObjectId(id) });
+        return res as ScheduledMessage;
+    } catch (err) {
+        console.log('[database] ', err);
+    }
+}
+
 export async function insertScheduledMessageToDatabase(message: ScheduledMessage) {
     try {
         const { guild_id, channel_id } = message;

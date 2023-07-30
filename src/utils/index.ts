@@ -11,6 +11,7 @@ export function convertTimeString(timestring: string) {
 
         if (time.endsWith('M')) final_time += 2_630_000 * number;
         if (time.endsWith('W')) final_time += 604_800 * number;
+        if (time.endsWith('w')) final_time += 604_800 * number;
         if (time.endsWith('d')) final_time += 86400 * number;
         if (time.endsWith('h')) final_time += 3600 * number;
         if (time.endsWith('m')) final_time += 60 * number;
