@@ -5,7 +5,7 @@ import { CustomEmbeds } from '../../config/embeds';
 import { ScheduledMessage } from '../../types';
 
 const meta = new SlashCommandBuilder()
-    .setName('schedule-message')
+    .setName('scheduled-message')
     .setDescription('Manage your guilds scheduled messages.')
     .addSubcommand((opt) => opt
         .setName('create')

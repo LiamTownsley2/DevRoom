@@ -1,7 +1,8 @@
 import { APIEmbed, User } from 'discord.js';
 import { GuildConfig, ScheduledMessage, StockChartType, UserStats } from '../types';
-import { getCommandReference, getTimeUntilTargetTime } from '../utils';
+import { getAllCommandReferences, getCommandReference, getTimeUntilTargetTime } from '../utils';
 import CustomClient from '../client/CustomClient';
+import { getGuildConfig } from '../services';
 
 const DISCORD_WELCOME = [
     '{{USER}} joined the party.',
@@ -278,7 +279,7 @@ export const CustomEmbeds = {
         },
 
         setup: {
-            async server_configured(client:CustomClient): Promise<APIEmbed> {
+            async server_configured(client: CustomClient): Promise<APIEmbed> {
                 return {
                     ...DefaultEmbed,
                     title: '⚙️ Guild Configured Successfully',
@@ -286,6 +287,35 @@ export const CustomEmbeds = {
                         'This guild has been configured using the **setup** command.',
                         '',
                         `If you need any assistance in using this bot, use the ${await getCommandReference('guide', undefined, client)} command!`
+                    ].join('\n')
+                }
+            },
+
+            async guide(client: CustomClient, guild_id: string): Promise<APIEmbed> {
+                const config = await getGuildConfig(guild_id);
+                let welcome_channel = (config.welcome_module.welcome_channel ?? false) ? `<#${config.welcome_module.welcome_channel}>` : undefined;
+                return {
+                    ...DefaultEmbed,
+                    title: '📡 Bot Feature\'s Guide',
+                    description: [
+                        '**Welcome Module**',
+                        `> **Enabled**: ${(config.welcome_module.enabled == true) ? '✅' : '❌'}`,
+                        (config.welcome_module.enabled == true) ? [
+                            `> **Output Channel**: ${(welcome_channel) ? welcome_channel : `Channel not set, use the ${await getCommandReference('manage-welcome', 'set-channel', client)} command to set the channel.`}`,
+                            `> **Output Message**: ${(config.welcome_module.discord_mode == false && config.welcome_module.custom_welcome_message) ? `${config.welcome_module.custom_welcome_message}` : `Module is on Discord Mode, you can change this with the ${await getCommandReference('manage-welcome', 'set-mode', client)} command`}`,
+                        ].join('\n') : `You can use the ${await getCommandReference('module', 'enable', client)} command to enable this module.`,
+                        '',
+                        '**Scheduled Messages**',
+                        `> **Enabled**: ${(config.scheduled_messages_module.enabled == true) ? '✅' : '❌'}`,
+                        (config.scheduled_messages_module.enabled == true) ? `You can can create Scheduled Messages by using the ${await getCommandReference('scheduled-message', 'create', client)} command` : `You can use the ${await getCommandReference('module', 'enable', client)} command to enable this module.`,
+                        '',
+                        '**Games Module**',
+                        `> **Enabled**: ${config.games_module.enabled == true ? '✅' : '❌'}`,
+                        (config.games_module.enabled == true) ? `You can use the ${await getCommandReference('rps', undefined, client)} command! You can also challenge other users too!` : `You can use the ${await getCommandReference('module', 'enable', client)} command to enable this module.`,
+                        '',
+                        '**Message Tracker**',
+                        `> **Enabled**: ${config.message_tracker_module.enabled == true ? '✅' : '❌'}`,
+                        (config.message_tracker_module.enabled == true) ? `You can use the ${await getCommandReference('leaderboard', undefined, client)} command to view the highest ranked users in the guild!` : `You can use the ${await getCommandReference('module', 'enable', client)} command to enable this module.`
                     ].join('\n')
                 }
             }
